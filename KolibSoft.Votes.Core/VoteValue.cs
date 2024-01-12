@@ -126,4 +126,9 @@ public struct VoteValue(ArraySegment<byte> utf8)
         return value;
     }
 
+    /// <summary>
+    /// Vote value 00000000.
+    /// </summary>
+    public static readonly VoteValue Zero = Parse("00000000");
+
 }

@@ -128,4 +128,9 @@ public struct VoteHash(ArraySegment<byte> utf8)
         return hash;
     }
 
+    /// <summary>
+    /// Vote hash 00000000000000000000000000000000.
+    /// </summary>
+    public static readonly VoteHash None = Parse("00000000000000000000000000000000");
+
 }

@@ -18,6 +18,23 @@ public class VoteMessage
     public int Length => Node.Data.Count + NodeSignature.Data.Count + Value.Data.Count + 3 +
                          Author.Data.Count + AuthorSignature.Data.Count + Issue.Data.Count + Content.Data.Count + 3;
 
+    public void CopyTo(ArraySegment<byte> data)
+    {
+        Node.Data.CopyTo(data.Slice(0, 32));
+        NodeSignature.Data.CopyTo(data.Slice(33, 32));
+        Value.Data.CopyTo(data.Slice(66, 8));
+        Author.Data.CopyTo(data.Slice(75, 32));
+        AuthorSignature.Data.CopyTo(data.Slice(108, 32));
+        Issue.Data.CopyTo(data.Slice(141, 8));
+        Issue.Data.CopyTo(data.Slice(150));
+        data[32] = (byte)'.';
+        data[65] = (byte)' ';
+        data[74] = (byte)'\n';
+        data[107] = (byte)'.';
+        data[140] = (byte)' ';
+        data[149] = (byte)'\n';
+    }
+
     public override string ToString()
     {
         return $"{Node}.{NodeSignature} {Value}\n{Author}.{AuthorSignature} {Issue}\n{Content}";
@@ -36,6 +53,12 @@ public class VoteMessage
 
     public VoteMessage()
     {
+        Node = VoteHash.None;
+        NodeSignature = VoteHash.None;
+        Value = VoteValue.Zero;
+        Author = VoteHash.None;
+        AuthorSignature = VoteHash.None;
+        Issue = VoteValue.Zero;
         Content = VoteContent.None;
     }
 
