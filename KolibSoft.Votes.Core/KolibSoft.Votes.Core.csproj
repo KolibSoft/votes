@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>KolibSoft.Votes.Core</PackageId>
+    <AssemblyName>KolibSoft.Votes.Core</AssemblyName>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Authors>Kolib Software</Authors>
+    <Copyright>Kolib Software</Copyright>
+    <RepositoryUrl>https://github.com/KolibSoft/votes</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\logo.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>
