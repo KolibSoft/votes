@@ -1,4 +1,12 @@
-﻿using KolibSoft.Votes.Core;
+﻿using System.Security.Cryptography;
+using System.Text;
+using KolibSoft.Votes.Core;
+
+var rsa = RSA.Create();
+var pubkey = string.Join("", rsa.ExportRSAPublicKey().Select(x => x.ToString("x2")));
+var privkey = string.Join("", rsa.ExportRSAPrivateKey().Select(x => x.ToString("x2")));
+Console.WriteLine(pubkey);
+Console.WriteLine(privkey);
 
 var message = new VoteMessage
 {
