@@ -9,7 +9,7 @@ namespace KolibSoft.Votes.Core;
 /// Represents an 32-digit hexadecimal number that represents a 128-bit unsigned integer.
 /// </summary>
 /// <param name="utf8">UTF8 text.</param>
-public struct VoteSignature(ArraySegment<byte> utf8)
+public struct VoteHash(ArraySegment<byte> utf8)
 {
 
     /// <summary>
@@ -18,7 +18,7 @@ public struct VoteSignature(ArraySegment<byte> utf8)
     public ArraySegment<byte> Data { get; } = utf8;
 
     /// <summary>
-    /// Gets the string representation of the signature.
+    /// Gets the string representation of the hash.
     /// </summary>
     /// <returns></returns>
     public override string ToString()
@@ -31,7 +31,7 @@ public struct VoteSignature(ArraySegment<byte> utf8)
         if (obj == null || GetType() != obj.GetType())
             return false;
 
-        var other = (VoteSignature)obj;
+        var other = (VoteHash)obj;
         return this == other;
     }
 
@@ -41,7 +41,7 @@ public struct VoteSignature(ArraySegment<byte> utf8)
     }
 
     /// <summary>
-    /// Verify if the provided UTF8 text is a valid signature.
+    /// Verify if the provided UTF8 text is a valid hash.
     /// </summary>
     /// <param name="utf8">UTF8 text.</param>
     /// <returns></returns>
@@ -59,7 +59,7 @@ public struct VoteSignature(ArraySegment<byte> utf8)
     }
 
     /// <summary>
-    /// Verify if the provided string is a valid signature.
+    /// Verify if the provided string is a valid hash.
     /// </summary>
     /// <param name="string">String.</param>
     /// <returns></returns>
@@ -77,55 +77,55 @@ public struct VoteSignature(ArraySegment<byte> utf8)
     }
 
     /// <summary>
-    /// Parses an UTF8 text into a signature.
+    /// Parses an UTF8 text into a hash.
     /// </summary>
     /// <param name="utf8">UTF8 text.</param>
     /// <returns></returns>
     /// <exception cref="FormatException"></exception>
-    public static VoteSignature Parse(ReadOnlySpan<byte> utf8)
+    public static VoteHash Parse(ReadOnlySpan<byte> utf8)
     {
         if (!Verify(utf8))
-            throw new FormatException($"Invalid signature format: {Encoding.UTF8.GetString(utf8)}");
-        return new VoteSignature(utf8.ToArray());
+            throw new FormatException($"Invalid hash format: {Encoding.UTF8.GetString(utf8)}");
+        return new VoteHash(utf8.ToArray());
     }
 
     /// <summary>
-    /// Parses an string into a signature.
+    /// Parses an string into a hash.
     /// </summary>
     /// <param name="string">String.</param>
     /// <returns></returns>
     /// <exception cref="FormatException"></exception>
-    public static VoteSignature Parse(ReadOnlySpan<char> @string)
+    public static VoteHash Parse(ReadOnlySpan<char> @string)
     {
         if (!Verify(@string))
-            throw new FormatException($"Invalid signature format: {@string}");
+            throw new FormatException($"Invalid hash format: {@string}");
         var utf8 = new byte[32];
         Encoding.UTF8.GetBytes(@string, utf8);
-        return new VoteSignature(utf8);
+        return new VoteHash(utf8);
     }
 
-    public static bool operator ==(VoteSignature lhs, VoteSignature rhs)
+    public static bool operator ==(VoteHash lhs, VoteHash rhs)
     {
         return lhs.Data.SequenceEqual(rhs.Data) || (BigInteger)lhs == (BigInteger)rhs;
     }
 
-    public static bool operator !=(VoteSignature lhs, VoteSignature rhs)
+    public static bool operator !=(VoteHash lhs, VoteHash rhs)
     {
         return !lhs.Data.SequenceEqual(rhs.Data) && (BigInteger)lhs != (BigInteger)rhs;
     }
 
-    public static implicit operator BigInteger(VoteSignature signature)
+    public static implicit operator BigInteger(VoteHash hash)
     {
-        var @string = signature.ToString();
+        var @string = hash.ToString();
         var @int = BigInteger.Parse(@string, NumberStyles.HexNumber);
         return @int;
     }
 
-    public static implicit operator VoteSignature(BigInteger @int)
+    public static implicit operator VoteHash(BigInteger @int)
     {
         var @string = @int.ToString();
-        var signature = Parse(@string);
-        return signature;
+        var hash = Parse(@string);
+        return hash;
     }
 
 }

@@ -5,13 +5,13 @@ namespace KolibSoft.Votes.Core;
 public class VoteMessage
 {
 
-    public VoteNode Node { get; set; }
-    public VoteSignature NodeSignature { get; set; }
+    public VoteHash Node { get; set; }
+    public VoteHash NodeSignature { get; set; }
     public VoteValue Value { get; set; }
 
-    public VoteNode Author { get; set; }
-    public VoteSignature AuthorSignature { get; set; }
-    public VoteIssue Issue { get; set; }
+    public VoteHash Author { get; set; }
+    public VoteHash AuthorSignature { get; set; }
+    public VoteValue Issue { get; set; }
 
     public VoteContent Content { get; set; }
 
@@ -25,12 +25,12 @@ public class VoteMessage
 
     public VoteMessage(ArraySegment<byte> utf8)
     {
-        Node = new VoteNode(utf8.Slice(0, 32));
-        NodeSignature = new VoteSignature(utf8.Slice(33, 32));
+        Node = new VoteHash(utf8.Slice(0, 32));
+        NodeSignature = new VoteHash(utf8.Slice(33, 32));
         Value = new VoteValue(utf8.Slice(66, 8));
-        Author = new VoteNode(utf8.Slice(75, 32));
-        AuthorSignature = new VoteSignature(utf8.Slice(108, 32));
-        Issue = new VoteIssue(utf8.Slice(141, 8));
+        Author = new VoteHash(utf8.Slice(75, 32));
+        AuthorSignature = new VoteHash(utf8.Slice(108, 32));
+        Issue = new VoteValue(utf8.Slice(141, 8));
         Content = new VoteContent(utf8.Slice(150));
     }
 
@@ -42,16 +42,16 @@ public class VoteMessage
     public static bool Verify(ReadOnlySpan<byte> utf8)
     {
         if (utf8.Length < 150) return false;
-        var result = VoteNode.Verify(utf8.Slice(0, 32)) && VoteSignature.Verify(utf8.Slice(33, 32)) && VoteValue.Verify(utf8.Slice(66, 8)) &&
-                     VoteNode.Verify(utf8.Slice(75, 32)) && VoteSignature.Verify(utf8.Slice(108, 32)) && VoteIssue.Verify(utf8.Slice(141, 8));
+        var result = VoteHash.Verify(utf8.Slice(0, 32)) && VoteHash.Verify(utf8.Slice(33, 32)) && VoteValue.Verify(utf8.Slice(66, 8)) &&
+                     VoteHash.Verify(utf8.Slice(75, 32)) && VoteHash.Verify(utf8.Slice(108, 32)) && VoteValue.Verify(utf8.Slice(141, 8));
         return result;
     }
 
     public static bool Verify(ReadOnlySpan<char> @string)
     {
         if (@string.Length < 150) return false;
-        var result = VoteNode.Verify(@string.Slice(0, 32)) && VoteSignature.Verify(@string.Slice(33, 32)) && VoteValue.Verify(@string.Slice(66, 8)) &&
-                     VoteNode.Verify(@string.Slice(75, 32)) && VoteSignature.Verify(@string.Slice(108, 32)) && VoteIssue.Verify(@string.Slice(141, 8));
+        var result = VoteHash.Verify(@string.Slice(0, 32)) && VoteHash.Verify(@string.Slice(33, 32)) && VoteValue.Verify(@string.Slice(66, 8)) &&
+                     VoteHash.Verify(@string.Slice(75, 32)) && VoteHash.Verify(@string.Slice(108, 32)) && VoteValue.Verify(@string.Slice(141, 8));
         return result;
     }
 
