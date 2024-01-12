@@ -11,4 +11,8 @@ var message = new VoteMessage
     Content = VoteContent.Parse("TEXT DESCRIPTION")
 };
 
+var @string = message.ToString();
+message = VoteMessage.Parse(@string);
+
+Console.WriteLine(@string);
 Console.WriteLine(message);
